@@ -1,15 +1,17 @@
 require_relative 'game'
 require_relative 'instructions'
 
+
 class Mastermind
+  attr_reader :difficulty_level
 
   def initialize
     puts "Welcome to MASTERMIND"
-    user_output
+    @difficulty_level = ""
   end
 
   def user_output
-    puts "Would you like to (p)lay, read the (i)nstructions, or (q)uit?"
+    puts "\nWould you like to (p)lay, read the (i)nstructions, or (q)uit?\n"
     output = gets.chomp
     if output == 'p'|| output == 'play'
       difficulty_levels
@@ -17,31 +19,38 @@ class Mastermind
       i = Instructions.new
       i.instructions
     elsif output == 'q' || output == 'quit'
-       abort( "Exiting game.")
+       abort( "\nExiting game.")
      else
        erroneous_response
      end
    end
 
    def difficulty_levels
-      puts "What level would you like to play? (B)eginner with four colors, (I)ntermediate with six colors or (A)dvanced with 8 eight colors?"
+      puts "\nWhat level would you like to play?"
+      print "(B)eginner with four colors,".colorize(:blue)
+      print "(I)ntermediate with six colors".colorize(:yellow)
+      print " or (A)dvanced with 8 eight colors?\n".colorize(:green)
       output = gets.chomp
-      if output == 'B' || "b"
+      if output == 'B' || output == "b"
+        @difficulty_level = "beginner"
         g = Game.new
-        g.beginner_game_start
-      elsif output = "I" || "i"
+        g.beg_game_start
+      elsif output == "I" || output == "i"
+        @difficulty_level = "intermediate"
         g = Game.new
-        g.intermed_game_start
-      elsif output = "A" || "a"
+        g.int_game_start
+      elsif output == "A" || output == "a"
+        @difficulty_level = "advanced"
         g = Game.new
         g.adv_game_start
       end
    end
 
    def erroneous_response
-      puts "This is not a valid option. Try again."
+      puts "\nThis is not a valid option. Try again."
       user_output
    end
 end
 
 m= Mastermind.new
+m.user_output
