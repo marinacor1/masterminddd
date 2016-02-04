@@ -6,12 +6,15 @@ class Game
   attr_reader :guesses, :output, :correct, :minutes, :seconds, :initial_time
 
   def initialize
-    colors = ["r", "g", "b", "y"]
     @initial_time = Time.now
-    @correct = [colors[rand(0..3)], colors[rand(0..3)], colors[rand(0..3)], colors[rand(0..3)]]
     @count = 0
   end
-
+  # while game_still_going?
+    # 1: get input from user
+    # 2: figure out proper steps for that input
+    # 3: check if we're still playing (maybe update status? / counter? / etc)
+    # .... do stuff
+  # end
   # def game_start
   #   while #game is running #
   #     do
@@ -20,24 +23,58 @@ class Game
   #     end
   # end
 
-  def game_start
-    player_guess
-    # while game_still_going?
-      # 1: get input from user
-      # 2: figure out proper steps for that input
-      # 3: check if we're still playing (maybe update status? / counter? / etc)
-      # .... do stuff
-    # end
+  def beginner_game_start
+    colors = ["r", "g", "b", "y"]
+    @correct = [colors[rand(0..3)], colors[rand(0..3)], colors[rand(0..3)], colors[rand(0..3)]]
+    beg_player_guess
     output = gets.chomp
     path_selector(output)
   end
 
-  def player_guess
+  def intermed_game_start
+    colors = ["r", "g", "b", "y", "p", "w"]
+    @correct = [colors[rand(0..3)], colors[rand(0..3)], colors[rand(0..3)], colors[rand(0..3)]]
+    int_player_guess
+    output = gets.chomp
+    path_selector(output)
+  end
+
+  def adv_game_start
+    colors = ["r", "g", "b", "y", "p", "w", "f", "t"]
+    @correct = [colors[rand(0..3)], colors[rand(0..3)], colors[rand(0..3)], colors[rand(0..3)]]
+    adv_player_guess
+    output = gets.chomp
+    path_selector(output)
+  end
+
+  def beg_player_guess
     puts "I have generated a beginner sequence with four elements made up of:"
     print "(r)ed".colorize(:red)
     print ", (g)reen".colorize(:green)
     print ", (b)lue".colorize(:blue)
     print ", and (y)ellow.".colorize(:yellow)
+    puts "Use (q)uit at any time to end the game. What's your guess?"
+  end
+
+  def int_player_guess
+    puts "I have generated an intermediate sequence with six elements made up of:"
+    print "(r)ed".colorize(:red)
+    print ", (g)reen".colorize(:green)
+    print ", (b)lue".colorize(:blue)
+    print ", and (y)ellow.".colorize(:yellow)
+    print ", and (p)pink.".colorize(:pink)
+    print ", and (w)hite."
+    puts "Use (q)uit at any time to end the game. What's your guess?"
+  end
+
+  def adv_player_guess
+    puts "I have generated an intermediate sequence with six elements made up of:"
+    print "(r)ed".colorize(:red)
+    print ", (g)reen".colorize(:green)
+    print ", (b)lue".colorize(:blue)
+    print ", and (y)ellow.".colorize(:yellow)
+    print ", and (p)pink.".colorize(:pink)
+    print ", and (w)hite."
     puts "Use (q)uit at any time to end the game. What's your guess?"
   end
 
@@ -47,13 +84,13 @@ class Game
       abort( "Exiting game")
     elsif output == 'c' || output == 'cheat'
       puts "¯\\_(ツ)_/¯ Fine, you cheater. I will give you the answer. The secret code is: #{answer.upcase}.".colorize(:light_blue)
-      game_start
+      beginner_game_start
     elsif output.length > 4
       puts "Oh no! Your guess is too long. Try again."
-      game_start
+      beginner_game_start
     elsif output.length < 4
       puts "Oh no! Your guess is too short. Try again."
-      game_start
+      beginner_game_start
     else
       guess_validator(output)
     end
@@ -74,7 +111,7 @@ class Game
     correct_number(guesses)
     feedback(guesses)
     #if you get it wrong, i don't want it to prompt the same, but rather just give option to guess
-    game_start
+    beginner_game_start
   end
 
   def position_number(guesses)
@@ -123,7 +160,7 @@ class Game
     output = gets.chomp
       if output == 'p' || output == 'play'
         g = Game.new
-        g.game_start
+        g.beginner_game_start
       elsif output == 'q' || output == 'quit'
         abort( "Exiting game.")
       else

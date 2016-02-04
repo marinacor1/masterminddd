@@ -12,8 +12,7 @@ class Mastermind
     puts "Would you like to (p)lay, read the (i)nstructions, or (q)uit?"
     output = gets.chomp
     if output == 'p'|| output == 'play'
-      g = Game.new
-      g.game_start
+      difficulty_levels
     elsif output == 'i'|| output == 'instructions'
       i = Instructions.new
       i.instructions
@@ -22,6 +21,21 @@ class Mastermind
      else
        erroneous_response
      end
+   end
+
+   def difficulty_levels
+      puts "What level would you like to play? (B)eginner with four colors, (I)ntermediate with six colors or (A)dvanced with 8 eight colors?"
+      output = gets.chomp
+      if output == 'B' || "b"
+        g = Game.new
+        g.beginner_game_start
+      elsif output = "I" || "i"
+        g = Game.new
+        g.intermed_game_start
+      elsif output = "A" || "a"
+        g = Game.new
+        g.adv_game_start
+      end
    end
 
    def erroneous_response
