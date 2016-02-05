@@ -3,11 +3,9 @@ require_relative 'instructions'
 
 
 class Mastermind
-  attr_reader :difficulty_level
 
   def initialize
     puts "Welcome to MASTERMIND"
-    @difficulty_level = ""
   end
 
   def user_output
@@ -32,15 +30,12 @@ class Mastermind
       print " or (A)dvanced with 8 eight colors?\n".colorize(:green)
       output = gets.chomp
       if output == 'B' || output == "b"
-        @difficulty_level = "beginner"
         g = Game.new
         g.beg_game_start
       elsif output == "I" || output == "i"
-        @difficulty_level = "intermediate"
         g = Game.new
         g.int_game_start
       elsif output == "A" || output == "a"
-        @difficulty_level = "advanced"
         g = Game.new
         g.adv_game_start
       end
