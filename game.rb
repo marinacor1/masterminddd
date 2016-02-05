@@ -1,59 +1,110 @@
 require 'pry'
-require_relative 'stopwatch'
 require 'colorize'
 
 class Game
-  attr_reader :guesses, :output, :correct, :minutes, :seconds, :initial_time
+  attr_reader :guesses, :output, :correct, :minutes, :seconds, :initial_time, :difficulty_level
 
   def initialize
-    colors = ["r", "g", "b", "y"]
     @initial_time = Time.now
-    @correct = [colors[rand(0..3)], colors[rand(0..3)], colors[rand(0..3)], colors[rand(0..3)]]
     @count = 0
   end
 
-  # def game_start
-  #   while #game is running #
-  #     do
-  #     output = gets.chomp
-  #     path_selector(output)
-  #     end
-  # end
+  def correct_sequence(difficulty_level)
+    if difficulty_level == "beginner"
+      colors = ["r", "g", "b", "y"]
+      @correct ||= [colors[rand(0..3)], colors[rand(0..3)], colors[rand(0..3)], colors[rand(0..3)]]
+    elsif difficulty_level == "intermediate"
+      colors = ["r", "g", "b", "y", "p", "w"]
+      @correct ||= [colors[rand(0..5)], colors[rand(0..5)], colors[rand(0..5)], colors[rand(0..5)], colors[rand(0..5)], colors[rand(0..5)]]
+    else difficulty_level == "advanced"
+      colors = ["r", "g", "b", "y", "p", "w", "s", "m"]
+      @correct ||= [colors[rand(0..7)], colors[rand(0..7)], colors[rand(0..7)], colors[rand(0..7)], colors[rand(0..7)], colors[rand(0..7)], colors[rand(0..7)], colors[rand(0..7)]]
+    end
+  end
 
-  def game_start
-    player_guess
-    # while game_still_going?
-      # 1: get input from user
-      # 2: figure out proper steps for that input
-      # 3: check if we're still playing (maybe update status? / counter? / etc)
-      # .... do stuff
-    # end
-    output = gets.chomp
+  def beg_game_start
+    @difficulty_level = "beginner"
+    correct_sequence("beginner")
+    @max_length = 4
+    beg_player_guess
+    output = gets.chomp.downcase
     path_selector(output)
   end
 
-  def player_guess
-    puts "I have generated a beginner sequence with four elements made up of:"
-    print "(r)ed".colorize(:red)
-    print ", (g)reen".colorize(:green)
-    print ", (b)lue".colorize(:blue)
-    print ", and (y)ellow.".colorize(:yellow)
-    puts "Use (q)uit at any time to end the game. What's your guess?"
+  def int_game_start
+    @difficulty_level = "intermediate"
+    correct_sequence("intermediate")
+    @max_length = 6
+    int_player_guess
+    output = gets.chomp.downcase
+    path_selector(output)
+  end
+
+  def adv_game_start
+    @difficulty_level = "advanced"
+    correct_sequence("advanced")
+    @max_length = 8
+    adv_player_guess
+    output = gets.chomp.downcase
+    path_selector(output)
+  end
+
+  def beg_player_guess
+    puts "\nI have generated a beginner sequence with four elements made up of:"
+    print "(r)ed, ".colorize(:red)
+    print "(g)reen, ".colorize(:green)
+    print "(b)lue, ".colorize(:blue)
+    print "and (y)ellow.".colorize(:yellow)
+    puts "\nUse (q)uit at any time to end the game. You can press (c) to cheat. What's your guess?"
+  end
+
+  def int_player_guess
+    puts "\nI have generated a intermediate sequence with six elements made up of:"
+    print "(r)ed, ".colorize(:red)
+    print "(g)reen, ".colorize(:green)
+    print "(b)lue, ".colorize(:blue)
+    print "(y)ellow, ".colorize(:yellow)
+    print "(p)urple, ".colorize(:light_blue)
+    print "and (w)white."
+    puts "\nUse (q)uit at any time to end the game. You can press (c) to cheat. What's your guess?"
+  end
+
+  def adv_player_guess
+    puts "\nI have generated an advanced sequence with eight elements made up of:"
+    print "(r)ed, ".colorize(:red)
+    print "(g)reen, ".colorize(:green)
+    print "(b)lue, ".colorize(:blue)
+    print "(y)ellow, ".colorize(:yellow)
+    print "(p)urple, ".colorize(:light_blue)
+    print "(w)white, "
+    print "(s)almon, ".colorize(:light_red)
+    print "and (m)int.".colorize(:light_green)
+    puts "\nUse (q)uit at any time to end the game. You can press (c) to cheat. What's your guess?"
+  end
+
+  def difficulty_selector
+    if difficulty_level == "beginner"
+      beg_game_start
+    elsif difficulty_level == "intermediate"
+      int_game_start
+    else difficulty_level == "advanced"
+      adv_game_start
+    end
   end
 
   def path_selector(output)
     answer = @correct.join("")
     if output == 'q' || output == 'quit'
-      abort( "Exiting game")
+      abort( "\nExiting game")
     elsif output == 'c' || output == 'cheat'
-      puts "¯\\_(ツ)_/¯ Fine, you cheater. I will give you the answer. The secret code is: #{answer.upcase}.".colorize(:light_blue)
-      game_start
-    elsif output.length > 4
-      puts "Oh no! Your guess is too long. Try again."
-      game_start
-    elsif output.length < 4
-      puts "Oh no! Your guess is too short. Try again."
-      game_start
+      puts "\n¯\\_(ツ)_/¯ Fine, you cheater. I will give you the answer. The secret code is: #{answer.upcase}.".colorize(:light_blue)
+      difficulty_selector
+    elsif output.length > @max_length
+      puts "\nOh no! Your guess is too long. Try again."
+      difficulty_selector
+    elsif output.length < @max_length
+      puts "\nOh no! Your guess is too short. Try again."
+        difficulty_selector
     else
       guess_validator(output)
     end
@@ -73,8 +124,7 @@ class Game
     position_number(guesses)
     correct_number(guesses)
     feedback(guesses)
-    #if you get it wrong, i don't want it to prompt the same, but rather just give option to guess
-    game_start
+    difficulty_selector
   end
 
   def position_number(guesses)
@@ -103,7 +153,7 @@ class Game
   end
 
   def feedback(guesses)
-    puts "'#{guesses.upcase}' has #{@correct_num} of the correct elements with #{(@position.to_s)} in the correct position(s). \nYou've taken #{@count} guess(es)."
+    puts "\n'#{guesses.upcase}' has #{@correct_num} of the correct elements with #{(@position.to_s)} in the correct position(s). \nYou've taken #{@count} guess(es)."
   end
 
   def stopwatch
@@ -114,23 +164,28 @@ class Game
 
   def congrats_message
     correct = @correct.join("")
-    puts "Congratulation! You guessed the sequence '#{correct.upcase}' in #{@count} guesses over #{@minutes} minutes, #{@seconds} seconds. \nDo you want to (p)lay again or (q)uit?"
+    puts "\nCongratulations! You guessed the sequence '#{correct.upcase}' in #{@count} guesses over #{@minutes} minutes, #{@seconds} seconds. \nDo you want to (p)lay again or (q)uit?"
   end
 
   def end_game
     stopwatch
     congrats_message
-    output = gets.chomp
+    user_input
+  end
+
+  def user_input
+    output = gets.chomp.downcase
       if output == 'p' || output == 'play'
-        g = Game.new
-        g.game_start
+        m = Mastermind.new
+        m.user_output
       elsif output == 'q' || output == 'quit'
-        abort( "Exiting game.")
+        abort( "\nExiting game.")
       else
-        puts "This is not an option. \nDo you want to (p)lay again or (q)uit?"
+        puts "\nThis is not an option. \nDo you want to (p)lay again or (q)uit?\n"
         output = gets
       end
   end
+
 
 
 end
