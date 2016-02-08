@@ -47,12 +47,12 @@ module Responses
   end
 
   def feedback(guesses)
-    puts "\n'#{guesses.upcase}' has #{@correct_num} of the correct elements with #{(@position.to_s)} in the correct position(s). \nYou've taken #{@count} guess(es)."
+    puts"\n'#{guesses.upcase}'".colorize(:light_red)" has ""#{@correct_num}".colorize(:red)" of the correct elements with " "#{(@position.to_s)}".colorize(:red)" in the correct position(s). \nYou've taken #{@count} guess(es)."
   end
 
   def congrats_message
     correct = @correct.join("")
-    def puts "\nCongratulations! You guessed the sequence '#{correct.upcase}' in #{@count} guesses over" "#{@minutes} minutes,".colorize(.yellow)  "#{@seconds} seconds.".colorize(:yellow) "\nDo you want to (p)lay again or (q)uit?"(var)
+    def puts "\nCongratulations! You guessed the sequence '#{correct.upcase}' in #{@count} guesses over" "#{@minutes}".colorize(:yellow) " minutes, #{@seconds} seconds.".colorize(:yellow) "\nDo you want to (p)lay again or (q)uit?"(var)
 
     end
   end
