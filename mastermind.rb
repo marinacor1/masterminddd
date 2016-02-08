@@ -9,7 +9,7 @@ class Mastermind
   end
 
   def user_output
-    puts "\nWould you like to (p)lay, read the (i)nstructions, or (q)uit?\n"
+    puts "\nWould you like to (p)lay, read the (i)nstructions, or (q)uit the game?\n"
     output = gets.chomp
     if output == 'p'|| output == 'play'
       difficulty_levels
