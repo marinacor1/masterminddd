@@ -2,27 +2,27 @@ require 'colorize'
 module Responses
 
   def beg_player_guess
-    puts "\nI have generated a beginner sequence with four elements made up of:"
+    puts "\nI have generated a beginner sequence with four elements.  Type your guess below.  Your options are made up of:"
     print "(r)ed, ".colorize(:red)
     print "(g)reen, ".colorize(:green)
     print "(b)lue, ".colorize(:blue)
     print "and (y)ellow.".colorize(:yellow)
-    puts "\nUse (q)uit at any time to end the game. You can press (c) to cheat. What's your guess?"
+    puts "\nUse (q)uit at any time to end the game. You can press (c) to cheat and get the secret code. What's your guess?"
   end
 
   def int_player_guess
-    puts "\nI have generated a intermediate sequence with six elements made up of:"
+    puts "\nI have generated a intermediate sequence with six elements.  Type your guess below. Your options are made up of:"
     print "(r)ed, ".colorize(:red)
     print "(g)reen, ".colorize(:green)
     print "(b)lue, ".colorize(:blue)
     print "(y)ellow, ".colorize(:yellow)
     print "(p)urple, ".colorize(:light_blue)
     print "and (w)white."
-    puts "\nUse (q)uit at any time to end the game. You can press (c) to cheat. What's your guess?"
+    puts "\nUse (q)uit at any time to end the game. You can press (c) to cheat and get the secret code. What's your guess?"
   end
 
   def adv_player_guess
-    puts "\nI have generated an advanced sequence with eight elements made up of:"
+    puts "\nI have generated an advanced sequence with eight elements.  Type your guess below. Your options are made up of:"
     print "(r)ed, ".colorize(:red)
     print "(g)reen, ".colorize(:green)
     print "(b)lue, ".colorize(:blue)
@@ -31,7 +31,7 @@ module Responses
     print "(w)white, "
     print "(s)almon, ".colorize(:light_red)
     print "and (m)int.".colorize(:light_green)
-    puts "\nUse (q)uit at any time to end the game. You can press (c) to cheat. What's your guess?"
+    puts "\nUse (q)uit at any time to end the game. You can press (c) to cheat and get the secret code. What's your guess?"
   end
 
   def cheat_response
@@ -52,15 +52,10 @@ module Responses
 
   def congrats_message
     correct = @correct.join("")
-    puts "\nCongratulations! You guessed the sequence '#{correct.upcase}' in #{@count} guesses over #{@minutes} minutes, #{@seconds} seconds. \nDo you want to (p)lay again or (q)uit?"
+    def puts "\nCongratulations! You guessed the sequence '#{correct.upcase}' in #{@count} guesses over" "#{@minutes} minutes,".colorize(.yellow)  "#{@seconds} seconds.".colorize(:yellow) "\nDo you want to (p)lay again or (q)uit?"(var)
 
-    # puts "\n Congratulations! You\'ve guessed the sequence! What's your name?"
-    # name = gets.chomp.capitalize
+    end
   end
-
-  # def name_message
-  #   puts "#{name}, you guessed the sequence '#{@correct} in #{@count} over #{@minutes}, #{@seconds}. That's #{@diff_min}, #{@diff_sec} seconds faster and #{@diff_count} guesses fewer than the average."
-  # end
 
   def error_message
     puts "\nThis is not an option. \nDo you want to (p)lay again or (q)uit?\n"
