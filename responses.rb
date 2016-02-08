@@ -35,7 +35,8 @@ module Responses
   end
 
   def cheat_response
-    puts "\n¯\\_(ツ)_/¯ Fine, you cheater. I will give you the answer. The secret code is:".colorize(:light_blue) "  #{answer.upcase}. ".colorize(:yellow)
+    puts "\n¯\\_(ツ)_/¯ Fine, you cheater. I will give you the answer. The secret code is:".colorize(:light_blue)
+    print "#{answer.upcase}".colorize(:yellow)
   end
 
   def too_long_response
@@ -47,14 +48,19 @@ module Responses
   end
 
   def feedback(guesses)
-    puts"\n'#{guesses.upcase}'".colorize(:light_red)" has ""#{@correct_num}".colorize(:red)" of the correct elements with " "#{(@position.to_s)}".colorize(:red)" in the correct position(s). \nYou've taken #{@count} guess(es)."
+    print "\n'#{guesses.upcase}'".colorize(:light_green)
+    print " has "
+    print "#{@correct_num}".colorize(:red)
+    print " of the correct elements with "
+    print "#{(@position.to_s)}".colorize(:red)
+    print " in the correct position(s). \nYou've taken #{@count} guess(es)."
   end
 
   def congrats_message
     correct = @correct.join("")
-    def puts "\nCongratulations! You guessed the sequence '#{correct.upcase}' in #{@count} guesses over" "#{@minutes}".colorize(:yellow) " minutes, #{@seconds} seconds.".colorize(:yellow) "\nDo you want to (p)lay again or (q)uit?"(var)
-
-    end
+    puts "\nCongratulations! You guessed the sequence '#{correct.upcase}' in #{@count} guesses over " "#{@minutes}".colorize(:yellow)
+    print " minutes, #{@seconds} seconds.".colorize(:yellow)
+    puts "\nDo you want to (p)lay again or (q)uit?"
   end
 
   def error_message

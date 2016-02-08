@@ -1,7 +1,9 @@
 require 'pry'
 require 'colorize'
+require_relative 'responses'
 
 class Game
+  include Responses
   attr_reader :guesses, :output, :correct, :minutes, :seconds, :initial_time, :difficulty_level
 
   def initialize
@@ -152,19 +154,10 @@ class Game
     @correct_num = correct_num
   end
 
-  def feedback(guesses)
-    puts "\n'#{guesses.upcase}' has #{@correct_num} of the correct elements with #{(@position.to_s)} in the correct position(s). \nYou've taken #{@count} guess(es)."
-  end
-
   def stopwatch
     time_diff = (Time.now - initial_time).divmod(60)
     @minutes = time_diff[0]
     @seconds = time_diff[1].to_i
-  end
-
-  def congrats_message
-    correct = @correct.join("")
-    puts "\nCongratulations! You guessed the sequence '#{correct.upcase}' in #{@count} guesses over #{@minutes} minutes, #{@seconds} seconds. \nDo you want to (p)lay again or (q)uit?"
   end
 
   def end_game
