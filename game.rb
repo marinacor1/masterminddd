@@ -4,7 +4,14 @@ require_relative 'responses'
 
 class Game
   include Responses
-  attr_reader :guesses, :output, :correct, :minutes, :seconds, :initial_time, :difficulty_level
+  LEVELS = {b: = 4}
+  attr_reader :guesses,
+              :output,
+              :correct,
+              :minutes,
+              :seconds,
+              :initial_time,
+              :difficulty_level
 
   def initialize
     @initial_time = Time.now
@@ -22,6 +29,10 @@ class Game
       colors = ["r", "g", "b", "y", "p", "w", "s", "m"]
       @correct ||= [colors[rand(0..7)], colors[rand(0..7)], colors[rand(0..7)], colors[rand(0..7)], colors[rand(0..7)], colors[rand(0..7)], colors[rand(0..7)], colors[rand(0..7)]]
     end
+  end
+
+  def game_start(level)
+    @max_length = LEVELS[level]
   end
 
   def beg_game_start
@@ -128,16 +139,22 @@ class Game
     feedback(guesses)
     difficulty_selector
   end
+  assert_equal position_number("yyyy", "yyyy"), 4
 
-  def position_number(guesses)
-    @position = 0
+  def position_number(guesses, score)
     guesses = guesses.split("")
-    guesses.each_with_index do |guess, index|
-      if guess == correct[index]
-        @position += 1
+    (0...guesses.length).reduce(0) do |number_correct, index|
+      if guesses[index] == correct[index]
+        number_correct += 1
       end
-      @position
+      number_correct
     end
+    # guesses.each_with_index do |guess, index|
+    #   if guess == correct[index]
+    #     position += 1
+    #   end
+    #   position
+    # end
   end
 
   def correct_number(guesses)

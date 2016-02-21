@@ -31,13 +31,13 @@ class Mastermind
       output = gets.chomp
       if output == 'B' || output == "b"
         g = Game.new
-        g.beg_game_start
+        g.game_start(:beginner)
       elsif output == "I" || output == "i"
         g = Game.new
-        g.int_game_start
+        g.game_start(:intermediate)
       elsif output == "A" || output == "a"
         g = Game.new
-        g.adv_game_start
+        g.game_start(:advanced)
       end
    end
 
